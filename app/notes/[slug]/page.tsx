@@ -1,5 +1,6 @@
 import Note from "@/components/note";
 import { createClient as createBrowserClient } from "@/utils/supabase/client";
+import { createClient as createServerClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
 import { Note as NoteType } from "@/lib/types";
@@ -11,9 +12,11 @@ export const revalidate = 60 * 60; // 1 hour
 export async function generateStaticParams() {
   const supabase = createBrowserClient();
   const { data: posts } = await supabase
-    .from("notes")
+    .from("Public Notes")
     .select("slug")
     .eq("public", true);
+  
+  console.log(posts);
 
   return posts!.map(({ slug }) => ({
     slug,
@@ -31,9 +34,15 @@ export async function generateMetadata({
   const supabase = createBrowserClient();
   const slug = params.slug.replace(/^notes\//, '');
 
-  const { data: note } = await supabase.rpc("select_note", {
-    note_slug_arg: slug,
-  }).single() as { data: NoteType | null };
+  // const { data: note } = await supabase.rpc("select_note", {
+  //   note_slug_arg: slug,
+  // }).single() as { data: NoteType | null };
+
+  const {data: note} = await supabase
+    .from("Public Notes")
+    .select("*")
+    .eq("slug", params.slug)
+    .eq("public", true);
 
   const title = note?.title || "new note";
   const emoji = note?.emoji || "👋🏼";
@@ -58,9 +67,12 @@ export default async function NotePage({
   const supabase = createBrowserClient();
   const slug = params.slug.replace(/^notes\//, '');
 
-  const { data: note } = await supabase.rpc("select_note", {
-    note_slug_arg: slug,
-  }).single();
+    const {data: note} = await supabase
+    .from("Public Notes")
+    .select("*")
+    .eq("slug", params.slug)
+    .eq("public", true)
+    .maybeSingle();
 
   if (!note) {
     return redirect("/notes/error");

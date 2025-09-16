@@ -8,6 +8,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
+import { useEffect } from "react";
+
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -28,7 +30,7 @@ export default async function RootLayout({
 }>) {
   const supabase = createBrowserClient();
   const { data: notes } = await supabase
-    .from("notes")
+    .from("Public Notes")
     .select("*")
     .eq("public", true);
 
