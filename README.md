@@ -1,5 +1,7 @@
 # [notes](https://alanagoyal.com/notes)
 
+Jaysonw as here
+
 i'm obsessed with re-creating apple products. this one is a notes-inspired website that doubles as my personal website.
 
 ## clone the repo
