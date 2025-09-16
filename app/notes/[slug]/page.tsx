@@ -44,11 +44,11 @@ export async function generateMetadata({
     .eq("slug", params.slug)
     .eq("public", true);
 
-  const title = note?.title || "new note";
-  const emoji = note?.emoji || "👋🏼";
+  const title = "new note";
+  const emoji = "👋🏼";
 
   return {
-    title: `alana goyal | ${title}`,
+    title: `Tara Jeffries`,
     openGraph: {
       images: [
         `/notes/api/og/?title=${encodeURIComponent(title)}&emoji=${encodeURIComponent(
