@@ -104,10 +104,27 @@ export default function Sidebar({
     refreshSessionNotes,
   } = useContext(SessionNotesContext);
 
+  const [publicNotesState, setPublicNotesState] = useState(publicNotes);
+
   const notes = useMemo(
-    () => [...publicNotes, ...sessionNotes],
-    [publicNotes, sessionNotes]
-  );
+  () => [...publicNotesState, ...sessionNotes],
+  [publicNotesState, sessionNotes]
+);
+
+useEffect(() => {
+  const interval = setInterval(async () => {
+    const { data } = await supabase
+      .from("Public Notes")
+      .select("*")
+      .eq("public", true);
+    if (data) {
+      setPublicNotesState(data);
+    }
+  }, 5000); // every 5 seconds
+
+  return () => clearInterval(interval); // clean up
+}, []);
+
 
   useEffect(() => {
     if (pathname) {
