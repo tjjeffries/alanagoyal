@@ -50,7 +50,7 @@ export async function generateMetadata({
   const emoji = "👋🏼";
 
   return {
-    title: `Tara Jeffries`,
+    title: `tara jeffries`,
     openGraph: {
       images: [
         `/notes/api/og/?title=${encodeURIComponent(title)}&emoji=${encodeURIComponent(
